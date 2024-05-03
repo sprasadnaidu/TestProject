@@ -34,13 +34,14 @@ jobs:
       with:
         name: webapp
         path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-    - name: Create ZIP package
-      run: Compress-Archive -Path ./${{ env.AZURE_WEBAPP_PACKAGE_PATH }} -DestinationPath ./${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/TestProject1.1.1.zip
-      shell: pwsh
+
     - name: Install Octopus CLI 🐙
       uses: OctopusDeploy/install-octopus-cli-action@v3
       with:
         version: "*"
+    - name: Package TestProject
+      run: |
+        octo pack --id="TestProject" --format="Zip" --version="1.1.1" --basePath="$GITHUB_WORKSPACE/artifacts/TestProject" --outFolder="$GITHUB_WORKSPACE/artifacts"
     - name: Push build information to Octopus Deploy 🐙
       uses: OctopusDeploy/push-build-information-action@v3
       with:
