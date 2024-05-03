@@ -35,10 +35,8 @@ jobs:
         name: webapp
         path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
     - name: Create ZIP package
-      run: |
-          cd ./${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-          zip -r TestProject1.0.1.zip .
-          mv TestProject1.0.1.zip ../TestProject1.0.1.zip
+      run: Compress-Archive -Path ./${{ env.AZURE_WEBAPP_PACKAGE_PATH }} -DestinationPath ./${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/TestProject1.0.1.zip
+      shell: pwsh
     - name: Install Octopus CLI 🐙
       uses: OctopusDeploy/install-octopus-cli-action@v3
       with:
@@ -47,7 +45,7 @@ jobs:
       uses: OctopusDeploy/push-build-information-action@v3
       with:
         packages: |
-          'my-dotnet-artifacts'
+          'TestProject'
         version: 1.0.1
     - name: Push a package to Octopus Deploy 🐙
       uses: OctopusDeploy/push-package-action@v3
@@ -58,12 +56,12 @@ jobs:
       uses: OctopusDeploy/create-release-action@v3
       with:
         project: 'CICProject'
-        release_number: '1.0.1'
+        release_number: 1.0.1
     - name: Deploy a release in Octopus Deploy 🐙
       uses: OctopusDeploy/deploy-release-action@v3
       with:
         project: 'CICProject'
-        release_number: '1.0.1'
+        release_number: 1.0.1
         environments: 'QA'  
           
           
