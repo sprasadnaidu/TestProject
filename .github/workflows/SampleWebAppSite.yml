@@ -39,9 +39,11 @@ jobs:
       uses: OctopusDeploy/install-octopus-cli-action@v3
       with:
         version: "*"
-    - name: Package TestProject
-      run: |
-        octo pack --id="TestProject" --format="Zip" --version="1.1.1" --basePath="$GITHUB_WORKSPACE/artifacts/TestProject" --outFolder="$GITHUB_WORKSPACE/artifacts"
+      - name: Create ZIP package
+        run: |
+          cd ./TestProject\published
+          zip -r my-dotnet-artifacts1.0.1.zip .
+          mv my-dotnet-artifacts1.0.1.zip ../my-dotnet-artifacts1.0.1.zip
     - name: Push build information to Octopus Deploy 🐙
       uses: OctopusDeploy/push-build-information-action@v3
       with:
