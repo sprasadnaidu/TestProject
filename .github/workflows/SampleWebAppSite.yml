@@ -14,7 +14,7 @@ env:
   OCTOPUS_SPACE: Default
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: Ubuntu-latest
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET SDK
